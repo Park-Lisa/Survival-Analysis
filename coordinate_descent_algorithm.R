@@ -1,5 +1,3 @@
-rm(list = ls())
-
 # soft-thresholding operator
 S <- function(z, lambda) 
 {
@@ -8,10 +6,10 @@ S <- function(z, lambda)
     0 * (abs(z) <= lambda)
 }
 
-# LASSO update function for CD 
+# LASSO update function 
 lasso.update <- S
 
-# SCAD update function for CD
+# SCAD update function 
 scad.update <- function(z, lambda, a = 3.7)
 {
   if (abs(z) < 2 * lambda){
@@ -21,7 +19,7 @@ scad.update <- function(z, lambda, a = 3.7)
   } else z
 }
 
-# MCP update function for CD
+# MCP update function 
 mcp.update = function(z, lambda, gamma)
 {
   if (abs(z) <= gamma * lambda){
@@ -84,28 +82,4 @@ ncv <- function(x, y, lambda, type = "lasso", a = 3.7, init = rep(0, p), max.ite
              beta = beta.info,
              index = index)
 }
-
-# example
-set.seed(1)
-n <- 100
-p <- 5
-
-d <- 2
-beta <- c(rep(1, d), rep(0, p-d))
-
-x <- matrix(rnorm(n*p), n, p)
-e <- rnorm(n)
-y <- x %*% beta + e
-
-lambda <- 0.2
-# lasso
-obj1 <- ncv(x, y, lambda, type = "lasso")
-# scad
-obj2 <- ncv(x, y, lambda, type = "scad")
-# mcp
-obj3 <- ncv(x, y, lambda, type = "mcp")
-
-print(obj1)
-print(obj2)
-print(obj3)
 
